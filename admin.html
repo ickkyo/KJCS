@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KJCS Admin</title>
+
+<style>
+
+body{
+margin:0;
+font-family:sans-serif;
+background:linear-gradient(#f8f3e7,#e8dcc2);
+min-height:100vh;
+padding:20px;
+}
+
+.login-box,
+.panel{
+max-width:800px;
+margin:auto;
+background:white;
+border:3px solid #8b6b3f;
+border-radius:20px;
+padding:25px;
+box-shadow:0 10px 20px rgba(0,0,0,.15);
+}
+
+h1{
+text-align:center;
+color:#4d3821;
+}
+
+input{
+width:100%;
+padding:12px;
+font-size:16px;
+margin:10px 0;
+border-radius:10px;
+border:1px solid #ccc;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#6b7f4f;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+opacity:.9;
+}
+
+.card{
+margin-top:20px;
+padding:15px;
+background:#f8f3e7;
+border-radius:12px;
+}
+
+.card h3{
+margin-top:0;
+color:#4d3821;
+}
+
+.link{
+display:block;
+text-decoration:none;
+background:#6b7f4f;
+color:white;
+padding:12px;
+text-align:center;
+border-radius:10px;
+margin-top:10px;
+}
+
+.hidden{
+display:none;
+}
+
+.footer{
+text-align:center;
+margin-top:20px;
+color:#666;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="loginBox" class="login-box">
+
+<h1>KJCS Admin</h1>
+
+<p>管理者パスワードを入力してください。</p>
+
+<input
+type="password"
+id="adminPass"
+placeholder="Password">
+
+<button onclick="login()">
+Login
+</button>
+
+</div>
+
+<div id="adminPanel" class="panel hidden">
+
+<h1>Admin Panel</h1>
+
+<div class="card">
+
+<h3>📢 電光掲示板の更新</h3>
+
+<ol>
+<li>message.txt を開く</li>
+<li>鉛筆マーク（Edit）を押す</li>
+<li>文章を書き換える</li>
+<li>Commit changes</li>
+<li>約1分後に反映</li>
+</ol>
+
+</div>
+
+<div class="card">
+
+<h3>📄 明日の連絡</h3>
+
+<p>
+images/notice.jpg を差し替えて更新
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>🗓 週間予定表</h3>
+
+<p>
+images/schedule.jpg を差し替えて更新
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>🔗 管理リンク</h3>
+
+<a
+class="link"
+href="https://github.com"
+target="_blank">
+GitHub </a>
+
+<a
+class="link"
+href="index.html">
+KJCS Portal </a>
+
+</div>
+
+<div class="footer">
+
+KJCS Admin System
+
+</div>
+
+</div>
+
+<script>
+
+function login(){
+
+const pass =
+document.getElementById(
+"adminPass"
+).value;
+
+if(pass==="10139998kk"){
+
+document.getElementById(
+"loginBox"
+).style.display="none";
+
+document.getElementById(
+"adminPanel"
+).classList.remove(
+"hidden"
+);
+
+}else{
+
+alert(
+"Password incorrect"
+);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
