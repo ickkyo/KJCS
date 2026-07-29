@@ -1,63 +1,133 @@
 <!DOCTYPE html>
-
 <html lang="ja">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>KJCS Portal</title>
 
 <style>
-body{
+
+*{
 margin:0;
-font-family:sans-serif;
-background:linear-gradient(#f8f3e7,#e8dcc2);
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
+padding:0;
+box-sizing:border-box;
+font-family:"Yu Gothic",sans-serif;
+}
+
+body{
+
+background:
+linear-gradient(rgba(255,248,235,.92),rgba(255,248,235,.92)),
+url("https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1400&q=80");
+
+background-size:cover;
+background-attachment:fixed;
+
 }
 
 .container{
-width:90%;
-max-width:600px;
+
+max-width:900px;
+margin:40px auto;
+padding:25px;
+
+}
+
+header{
+
+background:#3e2c1f;
+color:white;
+padding:25px;
+border-radius:18px;
+text-align:center;
+box-shadow:0 8px 18px rgba(0,0,0,.2);
+
+}
+
+header h1{
+
+font-size:42px;
+
+}
+
+header p{
+
+margin-top:8px;
+opacity:.9;
+
 }
 
 .card{
-background:white;
-border:3px solid #8b6b3f;
-border-radius:20px;
-padding:30px;
-box-shadow:0 10px 20px rgba(0,0,0,.15);
+
+margin-top:25px;
+background:rgba(255,255,255,.95);
+padding:25px;
+border-radius:18px;
+border:3px solid #9b7446;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+
 }
 
-h1{
-text-align:center;
-color:#4d3821;
-margin-bottom:30px;
+.card h2{
+
+color:#5b3a19;
+margin-bottom:15px;
+
 }
 
 .button{
+
 display:block;
-text-decoration:none;
 text-align:center;
-padding:18px;
-margin:15px 0;
-background:#6b7f4f;
+margin-top:15px;
+
+background:#6f8d4e;
 color:white;
-font-size:18px;
+
+padding:16px;
+
 border-radius:12px;
+
+text-decoration:none;
+
+font-size:20px;
+
+transition:.3s;
+
 }
 
 .button:hover{
-opacity:.9;
+
+background:#4d6735;
+transform:scale(1.02);
+
+}
+
+.info{
+
+line-height:2;
+
 }
 
 .footer{
+
+margin-top:35px;
 text-align:center;
-margin-top:20px;
 color:#555;
-font-size:14px;
+
 }
+
+.version{
+
+margin-top:10px;
+font-size:14px;
+color:#777;
+
+}
+
 </style>
 
 </head>
@@ -66,22 +136,106 @@ font-size:14px;
 
 <div class="container">
 
-<div class="card">
+<header>
 
 <h1>KJCS Portal</h1>
 
-<a class="button" onclick="enterRoom()">11th room</a>
+<p>
+和モダン Student Portal
+</p>
 
-<a class="button" href="https://docs.google.com/forms/d/e/1FAIpQLSeJVtmoUJUsVIGgI0SsQIc3yML1fW-3XdwLZOL9wDHuJg6eeA/viewform?usp=dialog" target="_blank">
-Feedback
+</header>
+
+<div class="card">
+
+<h2>🏫 11th room</h2>
+
+<p>
+
+クラス連絡・週間予定・配信情報はこちら
+
+</p>
+
+<a href="room.html" class="button">
+
+Enter 11th room
+
 </a>
 
-<a class="button" onclick="adminLogin()">
-Admin
+<p style="margin-top:15px;color:#666;">
+
+パスワード：141
+
+<br>
+
+ヒント：中学入学時の人数
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>🛠 Admin</h2>
+
+<p>
+
+管理者専用ページ
+
+</p>
+
+<a href="admin.html" class="button">
+
+Open Admin
+
 </a>
+
+</div>
+
+<div class="card">
+
+<h2>📢 What's New</h2>
+
+<div class="info">
+
+・Version2 開発中
+
+<br>
+
+・電光掲示板追加
+
+<br>
+
+・固定掲示板追加
+
+<br>
+
+・更新日時表示対応
+
+<br>
+
+・NEW表示対応
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📅 Information</h2>
+
+<div id="today"></div>
+
+</div>
 
 <div class="footer">
+
 KJCS Portal
+
+<div class="version">
+
+Version 2.0 Beta
+
 </div>
 
 </div>
@@ -89,34 +243,23 @@ KJCS Portal
 </div>
 
 <script>
-function enterRoom(){
 
-const pass=prompt(
-"11th room Password\n\nHint : 中学入学時の人数"
-);
+const week=["日","月","火","水","木","金","土"];
 
-if(pass==="141"){
-location.href="room.html";
-}else{
-alert("パスワードが違います");
-}
+const d=new Date();
 
-}
+document.getElementById("today").innerHTML=
 
-function adminLogin(){
+d.getFullYear()+"年"
 
-const pass=prompt(
-"Admin Password"
-);
++(d.getMonth()+1)+"月"
 
-if(pass==="10139998kk"){
-location.href="admin.html";
-}else{
-alert("Password incorrect");
-}
++d.getDate()+"日"
 
-}
++"（"+week[d.getDay()]+"）";
+
 </script>
 
 </body>
+
 </html>
