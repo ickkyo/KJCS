@@ -1,8 +1,21 @@
 <!DOCTYPE html>
-
 <html lang="ja">
+
 <head>
-  <script>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>11th room | KJCS Portal</title>
+
+<!--
+  未認証ならログイン画面へ戻す
+-->
+<script>
 if(
   sessionStorage.getItem("kjcs_room_auth")
   !== "authenticated"
@@ -10,128 +23,731 @@ if(
   location.replace("login.html");
 }
 </script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>11th room</title>
 
 <style>
 
-body{
-margin:0;
-font-family:sans-serif;
-background:linear-gradient(#f8f3e7,#e8dcc2);
-padding:20px;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
+:root{
+  --ink:#29271f;
+  --deep:#1e2b22;
+  --green:#294233;
+  --gold:#b79a5b;
+  --gold-light:#d4bd83;
+  --paper:#f5f0e3;
+  --paper-dark:#e8dfc9;
+  --line:#c7b991;
+  --white:#fffdf7;
+  --muted:#77705f;
+  --red:#a63838;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+
+  min-height:100vh;
+
+  font-family:
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    "Noto Sans JP",
+    sans-serif;
+
+  color:var(--ink);
+
+  background:
+    linear-gradient(
+      rgba(28,34,28,.91),
+      rgba(28,34,28,.91)
+    ),
+    repeating-linear-gradient(
+      90deg,
+      #30291e 0px,
+      #3c3325 3px,
+      #292219 7px,
+      #3a3022 13px
+    );
+
+  background-attachment:fixed;
+}
+
+/* 和紙・格子の質感 */
+
+body::before{
+
+  content:"";
+
+  position:fixed;
+
+  inset:0;
+
+  pointer-events:none;
+
+  opacity:.08;
+
+  background-image:
+    radial-gradient(
+      rgba(255,255,255,.9) 1px,
+      transparent 1px
+    );
+
+  background-size:5px 5px;
+
+}
+
+/* 全体 */
+
+.page{
+
+  width:min(1000px,94%);
+
+  margin:auto;
+
+  padding:25px 0 50px;
+
+}
+
+/* Header */
+
 .header{
-text-align:center;
-margin-bottom:20px;
+
+  position:relative;
+
+  padding:38px 20px 30px;
+
+  text-align:center;
+
+  color:#f6f0df;
+
+}
+
+.brand{
+
+  font-size:12px;
+
+  letter-spacing:7px;
+
+  color:var(--gold-light);
+
 }
 
 .header h1{
-color:#4d3821;
-margin:0;
+
+  margin-top:10px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(40px,9vw,68px);
+
+  font-weight:500;
+
+  letter-spacing:3px;
+
 }
 
-.back{
-display:inline-block;
-margin-top:10px;
-text-decoration:none;
-color:white;
-background:#6b7f4f;
-padding:10px 15px;
-border-radius:10px;
+.header-sub{
+
+  margin-top:10px;
+
+  color:#d8d0bf;
+
+  font-size:14px;
+
 }
+
+.header-line{
+
+  width:120px;
+
+  height:1px;
+
+  margin:22px auto 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--gold),
+      transparent
+    );
+
+}
+
+/* Back */
+
+.top-actions{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:15px;
+
+}
+
+.back-link,
+.logout-button{
+
+  color:#ded5c1;
+
+  background:transparent;
+
+  border:1px solid rgba(183,154,91,.55);
+
+  padding:9px 14px;
+
+  text-decoration:none;
+
+  font-size:13px;
+
+  cursor:pointer;
+
+}
+
+.back-link:hover,
+.logout-button:hover{
+
+  background:rgba(183,154,91,.12);
+
+}
+
+/* Cards */
 
 .card{
-background:white;
-border:3px solid #8b6b3f;
-border-radius:20px;
-padding:20px;
-margin-bottom:20px;
-box-shadow:0 5px 15px rgba(0,0,0,.1);
+
+  position:relative;
+
+  overflow:hidden;
+
+  margin-top:22px;
+
+  padding:28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(250,247,238,.98),
+      rgba(235,227,208,.98)
+    );
+
+  border:1px solid var(--gold);
+
+  box-shadow:
+    0 14px 35px rgba(0,0,0,.28),
+    inset 0 0 0 5px rgba(255,255,255,.22);
+
 }
 
-.card h2{
-margin-top:0;
-color:#4d3821;
+/* 内側の枠 */
+
+.card::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:7px;
+
+  border:1px solid rgba(117,89,42,.22);
+
+  pointer-events:none;
+
 }
 
-img{
-width:100%;
-border-radius:10px;
+.card-header{
+
+  position:relative;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:15px;
+
+  margin-bottom:16px;
+
 }
 
-.feedback-btn{
-display:block;
-text-align:center;
-background:#6b7f4f;
-color:white;
-text-decoration:none;
-padding:15px;
-border-radius:12px;
-font-size:18px;
+.card-title{
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:25px;
+
+  color:#4b3c25;
+
+  font-weight:500;
+
+}
+
+.card-description{
+
+  position:relative;
+
+  color:#6f6757;
+
+  line-height:1.8;
+
+  margin-bottom:18px;
+
+}
+
+/* NEW */
+
+.new-badge{
+
+  display:none;
+
+  padding:4px 9px;
+
+  background:var(--red);
+
+  color:white;
+
+  font-size:11px;
+
+  font-weight:bold;
+
+  letter-spacing:1px;
+
+  border-radius:2px;
+
+}
+
+.new-badge.show{
+
+  display:inline-block;
+
+}
+
+/* 更新日時 */
+
+.update-time{
+
+  position:relative;
+
+  color:var(--muted);
+
+  font-size:12px;
+
+  margin-top:10px;
+
 }
 
 /* 電光掲示板 */
 
+.ticker-card{
+
+  padding:20px 0;
+
+}
+
+.ticker-title{
+
+  padding:0 25px 13px;
+
+  color:#665638;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:20px;
+
+}
+
 .ticker{
-overflow:hidden;
-background:#2d2218;
-color:white;
-border-radius:10px;
-padding:12px;
-margin-bottom:20px;
+
+  width:100%;
+
+  overflow:hidden;
+
+  background:#111713;
+
+  border-top:1px solid var(--gold);
+
+  border-bottom:1px solid var(--gold);
+
+  padding:14px 0;
+
+  box-shadow:
+    inset 0 0 18px rgba(0,0,0,.8);
+
+}
+
+.ticker-track{
+
+  display:flex;
+
+  width:max-content;
+
+  animation:
+    tickerMove 24s linear infinite;
+
 }
 
 .ticker-text{
-display:inline-block;
-white-space:nowrap;
-padding-left:100%;
-animation:scroll 20s linear infinite;
-font-weight:bold;
+
+  white-space:nowrap;
+
+  color:#e7d49c;
+
+  font-family:
+    "Courier New",
+    monospace;
+
+  font-size:16px;
+
+  letter-spacing:1px;
+
+  padding-right:100px;
+
+  text-shadow:
+    0 0 5px rgba(231,212,156,.45);
+
 }
 
-@keyframes scroll{
-0%{
-transform:translateX(0);
-}
-100%{
-transform:translateX(-100%);
-}
+@keyframes tickerMove{
+
+  from{
+    transform:translateX(100vw);
+  }
+
+  to{
+    transform:translateX(-100%);
+  }
+
 }
 
-.footer{
-text-align:center;
-margin-top:30px;
-color:#666;
-}
+/* Message */
+
 .message-box{
 
-background:#f8f3e7;
-border-left:5px solid #8b6b3f;
-padding:15px;
-border-radius:10px;
-line-height:1.8;
+  position:relative;
+
+  padding:20px;
+
+  background:rgba(255,253,247,.72);
+
+  border-left:4px solid var(--gold);
+
+  line-height:1.9;
+
+  white-space:normal;
+
+  min-height:70px;
 
 }
+
+/* Fixed board */
 
 .fixed-board{
 
-background:#fffdf7;
-border:2px solid #8b6b3f;
-padding:15px;
-border-radius:10px;
-line-height:1.8;
+  position:relative;
+
+  padding:20px;
+
+  background:
+    linear-gradient(
+      rgba(255,253,247,.8),
+      rgba(246,240,224,.8)
+    );
+
+  border:1px solid var(--line);
+
+  line-height:1.9;
+
+}
+
+.fixed-board p{
+
+  margin-bottom:10px;
+
+}
+
+.fixed-board p:last-child{
+
+  margin-bottom:0;
 
 }
 
 .fixed-board hr{
 
-border:none;
-border-top:1px solid #ccc;
-margin:15px 0;
+  border:none;
+
+  border-top:1px solid var(--line);
+
+  margin:15px 0;
+
+}
+
+/* Schedule */
+
+.schedule-info{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:15px;
+
+}
+
+.schedule-date{
+
+  font-size:13px;
+
+  color:var(--muted);
+
+}
+
+.event-box{
+
+  padding:18px;
+
+  background:#26382c;
+
+  color:#f4eddb;
+
+  border:1px solid var(--gold);
+
+  line-height:1.8;
+
+}
+
+.live{
+
+  display:none;
+
+  padding:4px 9px;
+
+  background:#a63838;
+
+  color:white;
+
+  font-size:11px;
+
+  font-weight:bold;
+
+  letter-spacing:1px;
+
+}
+
+.live.show{
+
+  display:inline-block;
+
+}
+
+/* Image */
+
+.image-wrap{
+
+  position:relative;
+
+  margin-top:10px;
+
+  background:#ded5c0;
+
+  border:1px solid var(--line);
+
+  padding:8px;
+
+  text-align:center;
+
+}
+
+.image-wrap img{
+
+  display:block;
+
+  width:100%;
+
+  height:auto;
+
+  max-height:850px;
+
+  object-fit:contain;
+
+  margin:auto;
+
+}
+
+/* Image fallback */
+
+.image-error{
+
+  display:none;
+
+  padding:40px 15px;
+
+  color:#756c5a;
+
+  font-size:14px;
+
+}
+
+/* Feedback */
+
+.feedback-button{
+
+  position:relative;
+
+  display:block;
+
+  text-align:center;
+
+  padding:15px;
+
+  color:#f8f2e5;
+
+  background:var(--green);
+
+  border:1px solid var(--gold);
+
+  text-decoration:none;
+
+  transition:.25s;
+
+}
+
+.feedback-button:hover{
+
+  background:#3d5947;
+
+  transform:translateY(-2px);
+
+}
+
+/* Archive */
+
+.archive{
+
+  position:relative;
+
+  padding:18px;
+
+  border:1px dashed var(--line);
+
+  color:#756d5c;
+
+  line-height:1.8;
+
+}
+
+/* Footer */
+
+.footer{
+
+  text-align:center;
+
+  margin-top:38px;
+
+  color:#bdb4a1;
+
+  font-size:12px;
+
+  line-height:1.8;
+
+}
+
+/* Loading */
+
+.loading{
+
+  color:#88806f;
+
+  font-size:14px;
+
+}
+
+/* Responsive */
+
+@media(max-width:650px){
+
+  .page{
+
+    width:94%;
+
+    padding-top:10px;
+
+  }
+
+  .header{
+
+    padding:28px 10px 22px;
+
+  }
+
+  .top-actions{
+
+    gap:8px;
+
+  }
+
+  .back-link,
+  .logout-button{
+
+    padding:8px 10px;
+
+    font-size:12px;
+
+  }
+
+  .card{
+
+    padding:22px;
+
+  }
+
+  .card-title{
+
+    font-size:22px;
+
+  }
+
+  .card-header{
+
+    align-items:flex-start;
+
+  }
+
+  .ticker-text{
+
+    font-size:14px;
+
+  }
+
+  .image-wrap{
+
+    padding:5px;
+
+  }
 
 }
 
@@ -141,132 +757,788 @@ margin:15px 0;
 
 <body>
 
-<div class="header">
+<div class="page">
 
-<h1>11th room</h1>
+  <!-- Header -->
 
-<a class="back" href="index.html">
-← KJCS Portal
-</a>
+  <header class="header">
+
+    <div class="brand">
+      KJCS
+    </div>
+
+    <h1>11th room</h1>
+
+    <div class="header-line"></div>
+
+    <div class="header-sub">
+      Class Information Portal
+    </div>
+
+  </header>
+
+
+  <!-- Navigation -->
+
+  <div class="top-actions">
+
+    <a
+      class="back-link"
+      href="index.html"
+    >
+      ← Portal
+    </a>
+
+    <button
+      class="logout-button"
+      onclick="logout()"
+    >
+      Logout
+    </button>
+
+  </div>
+
+
+  <!-- 電光掲示板 -->
+
+  <section class="card ticker-card">
+
+    <div class="ticker-title">
+      Message Board
+    </div>
+
+    <div class="ticker">
+
+      <div
+        class="ticker-track"
+        id="tickerTrack"
+      >
+
+        <span
+          class="ticker-text"
+          id="tickerText"
+        >
+          Loading...
+        </span>
+
+        <span
+          class="ticker-text"
+          id="tickerTextClone"
+        >
+          Loading...
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Message -->
+
+  <section class="card">
+
+    <div class="card-header">
+
+      <h2 class="card-title">
+        Message
+      </h2>
+
+    </div>
+
+    <div
+      class="message-box"
+      id="messageBox"
+    >
+
+      <span class="loading">
+        Loading...
+      </span>
+
+    </div>
+
+  </section>
+
+
+  <!-- Fixed Board -->
+
+  <section class="card">
+
+    <div class="card-header">
+
+      <h2 class="card-title">
+        Fixed Board
+      </h2>
+
+    </div>
+
+    <div
+      class="fixed-board"
+      id="fixedBoard"
+    >
+
+      <span class="loading">
+        Loading...
+      </span>
+
+    </div>
+
+  </section>
+
+
+  <!-- 配信日時 -->
+
+  <section class="card">
+
+    <div class="card-header">
+
+      <h2 class="card-title">
+        Schedule
+      </h2>
+
+      <span
+        class="live"
+        id="liveBadge"
+      >
+        LIVE
+      </span>
+
+    </div>
+
+    <div
+      class="event-box"
+      id="eventBox"
+    >
+
+      <span class="loading">
+        Loading...
+      </span>
+
+    </div>
+
+  </section>
+
+
+  <!-- 明日の連絡 -->
+
+  <section class="card">
+
+    <div class="card-header">
+
+      <h2 class="card-title">
+        Tomorrow's Contact
+      </h2>
+
+      <span
+        class="new-badge"
+        id="noticeNew"
+      >
+        NEW
+      </span>
+
+    </div>
+
+    <div class="image-wrap">
+
+      <img
+        id="noticeImage"
+        src="images/notice.jpg"
+        alt="明日の連絡"
+        onerror="showImageError('noticeError','noticeImage')"
+      >
+
+      <div
+        class="image-error"
+        id="noticeError"
+      >
+        明日の連絡は現在準備中です。
+      </div>
+
+    </div>
+
+    <div
+      class="update-time"
+      id="noticeTime"
+    >
+      最終更新：読み込み中...
+    </div>
+
+  </section>
+
+
+  <!-- 週間予定表 -->
+
+  <section class="card">
+
+    <div class="card-header">
+
+      <h2 class="card-title">
+        Weekly Schedule
+      </h2>
+
+      <span
+        class="new-badge"
+        id="scheduleNew"
+      >
+        NEW
+      </span>
+
+    </div>
+
+    <div class="image-wrap">
+
+      <img
+        id="scheduleImage"
+        src="images/schedule.jpg"
+        alt="週間予定表"
+        onerror="showImageError('scheduleError','scheduleImage')"
+      >
+
+      <div
+        class="image-error"
+        id="scheduleError"
+      >
+        週間予定表は現在準備中です。
+      </div>
+
+    </div>
+
+    <div
+      class="update-time"
+      id="scheduleTime"
+    >
+      最終更新：読み込み中...
+    </div>
+
+  </section>
+
+
+  <!-- Feedback -->
+
+  <section class="card">
+
+    <div class="card-header">
+
+      <h2 class="card-title">
+        Feedback
+      </h2>
+
+    </div>
+
+    <p class="card-description">
+      Feedback form is available here.
+    </p>
+
+    <a
+      id="feedbackLink"
+      class="feedback-button"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Open Feedback Form
+    </a>
+
+  </section>
+
+
+  <!-- Archive -->
+
+  <section class="card">
+
+    <div class="card-header">
+
+      <h2 class="card-title">
+        Archive
+      </h2>
+
+    </div>
+
+    <div class="archive">
+
+      Previous information will be available here.
+
+      <br>
+
+      Archive function is currently under preparation.
+
+    </div>
+
+  </section>
+
+
+  <!-- Footer -->
+
+  <footer class="footer">
+
+    KJCS Portal<br>
+
+    11th room<br>
+
+    Version 2.0
+
+  </footer>
 
 </div>
 
-</div>
-  
-<!-- 電光掲示板 -->
-
-<div class="ticker">
-
-<div class="ticker-text">
-
-6/8(月)からリリースしました。
-バグとかあれば、下のformもしくは個人でのご連絡をお願いします。これらの連絡は主に一貫11期対象です。(基本、2組(理系)メインかと思います。あくまでも配信者が把握している範囲内となります。あらかじめご了承ください。)
-
-</div>
-
-</div>
-
-<!-- メッセージ欄 -->
-
-<div class="card">
-
-<h2>💬 メッセージ</h2>
-
-<div class="message-box" id="messageBox">
-
-読み込み中...
-
-</div>
-
-</div>
-  
-<!-- 固定掲示板 -->
-
-<div class="card">
-
-<h2>📌 固定掲示板</h2>
-
-<div class="fixed-board" id="fixedBoard">
-
-読み込み中...
-
-</div>
-
-</div>
-
-<!-- 明日の連絡 -->
-
-<div class="card">
-
-<h2>📄 明日の連絡 "Tomorrow' contact"</h2>
-
-<img src="images/Tomorrow's contact.png"
-onerror="this.src='https://placehold.co/1200x800?text=Notice'">
-
-</div>
-
-</div>
-
-<!-- 週間予定表 -->
-
-<div class="card">
-
-<h2>🗓 週間予定表 "Week's schedule"</h2>
-
-<img src="images/週間予定表.png"
-onerror="this.src='https://placehold.co/1200x800?text=Schedule'">
-
-</div>
-
-</div>
-
-<!-- Feedback -->
-
-<div class="card">
-
-<h2>📝 Feedback</h2>
-
-<a class="feedback-btn"
-href="https://docs.google.com/forms/d/e/1FAIpQLSeJVtmoUJUsVIGgI0SsQIc3yML1fW-3XdwLZOL9wDHuJg6eeA/viewform"
-target="_blank">
-
-Google Form を開く
-
-</a>
-
-</div>
-
-</div>
-  
-<div class="footer">
-
-KJCS Portal © 2026
-
-</div>
-
-</div>
 
 <script>
 
-fetch("message.txt")
-.then(response => response.text())
-.then(text => {
-document.getElementById(
-"messageBox"
-).innerHTML =
-text.replace(/\n/g,"<br>");
-});
+/* =========================================================
+   設定
+========================================================= */
 
-fetch("fixed.txt")
-.then(response => response.text())
-.then(text => {
-document.getElementById(
-"fixedBoard"
-).innerHTML =
-text.replace(/\n/g,"<br>");
-});
+const CONFIG_FILE = "config.json";
+
+const MESSAGE_FILE = "message.txt";
+
+const FIXED_FILE = "fixed.txt";
+
+
+/* =========================================================
+   キャッシュ対策
+========================================================= */
+
+function fileURL(file){
+
+  return file + "?v=" + Date.now();
+
+}
+
+
+/* =========================================================
+   テキスト読み込み
+========================================================= */
+
+async function loadText(file){
+
+  const response =
+    await fetch(fileURL(file));
+
+  if(!response.ok){
+
+    throw new Error(
+      file + " could not be loaded."
+    );
+
+  }
+
+  return await response.text();
+
+}
+
+
+/* =========================================================
+   Message
+========================================================= */
+
+async function loadMessage(){
+
+  const messageBox =
+    document.getElementById("messageBox");
+
+  const tickerText =
+    document.getElementById("tickerText");
+
+  const tickerClone =
+    document.getElementById("tickerTextClone");
+
+  try{
+
+    const text =
+      await loadText(MESSAGE_FILE);
+
+    const cleanText =
+      text.trim();
+
+    if(!cleanText){
+
+      throw new Error("Empty message");
+
+    }
+
+    messageBox.innerHTML =
+      escapeHTML(cleanText)
+      .replace(/\n/g,"<br>");
+
+    tickerText.textContent =
+      "📢 " + cleanText;
+
+    tickerClone.textContent =
+      "📢 " + cleanText;
+
+  }catch(error){
+
+    messageBox.textContent =
+      "現在メッセージはありません。";
+
+    tickerText.textContent =
+      "📢 現在メッセージはありません。";
+
+    tickerClone.textContent =
+      "📢 現在メッセージはありません。";
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* =========================================================
+   Fixed Board
+========================================================= */
+
+async function loadFixedBoard(){
+
+  const board =
+    document.getElementById("fixedBoard");
+
+  try{
+
+    const text =
+      await loadText(FIXED_FILE);
+
+    const cleanText =
+      text.trim();
+
+    if(!cleanText){
+
+      throw new Error("Empty fixed board");
+
+    }
+
+    board.innerHTML =
+      escapeHTML(cleanText)
+      .replace(/\n/g,"<br>");
+
+  }catch(error){
+
+    board.textContent =
+      "現在、固定掲示板に掲載されている情報はありません。";
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* =========================================================
+   Config
+========================================================= */
+
+async function loadConfig(){
+
+  try{
+
+    const response =
+      await fetch(fileURL(CONFIG_FILE));
+
+    if(!response.ok){
+
+      throw new Error(
+        "config.json could not be loaded."
+      );
+
+    }
+
+    const config =
+      await response.json();
+
+
+    /* Feedback */
+
+    if(config.feedbackUrl){
+
+      document.getElementById(
+        "feedbackLink"
+      ).href =
+        config.feedbackUrl;
+
+    }
+
+
+    /* Notice */
+
+    if(config.noticeUpdated){
+
+      setUpdateInfo(
+        config.noticeUpdated,
+        "noticeTime",
+        "noticeNew"
+      );
+
+    }
+
+
+    /* Schedule */
+
+    if(config.scheduleUpdated){
+
+      setUpdateInfo(
+        config.scheduleUpdated,
+        "scheduleTime",
+        "scheduleNew"
+      );
+
+    }
+
+
+    /* 配信日時 */
+
+    if(config.eventDate){
+
+      setEventInfo(
+        config.eventDate,
+        config.eventTitle
+          || "Next Event"
+      );
+
+    }else{
+
+      document.getElementById(
+        "eventBox"
+      ).textContent =
+        "配信予定は現在ありません。";
+
+    }
+
+
+  }catch(error){
+
+    console.error(error);
+
+    document.getElementById(
+      "feedbackLink"
+    ).href="#";
+
+    document.getElementById(
+      "eventBox"
+    ).textContent =
+      "Schedule information is currently unavailable.";
+
+  }
+
+}
+
+
+/* =========================================================
+   更新日時
+   2時間以内ならNEW
+========================================================= */
+
+function setUpdateInfo(
+  updateString,
+  timeId,
+  newId
+){
+
+  const date =
+    new Date(updateString);
+
+  const timeElement =
+    document.getElementById(timeId);
+
+  const newElement =
+    document.getElementById(newId);
+
+  if(isNaN(date.getTime())){
+
+    timeElement.textContent =
+      "最終更新：日時情報なし";
+
+    return;
+
+  }
+
+  timeElement.textContent =
+    "最終更新："
+    + formatDate(date);
+
+
+  const now =
+    new Date();
+
+  const diff =
+    now.getTime()
+    - date.getTime();
+
+
+  const twoHours =
+    2 * 60 * 60 * 1000;
+
+
+  if(
+    diff >= 0 &&
+    diff <= twoHours
+  ){
+
+    newElement.classList.add("show");
+
+  }else{
+
+    newElement.classList.remove("show");
+
+  }
+
+}
+
+
+/* =========================================================
+   配信日時
+========================================================= */
+
+function setEventInfo(
+  eventDateString,
+  title
+){
+
+  const eventBox =
+    document.getElementById("eventBox");
+
+  const liveBadge =
+    document.getElementById("liveBadge");
+
+  const eventDate =
+    new Date(eventDateString);
+
+  if(isNaN(eventDate.getTime())){
+
+    eventBox.textContent =
+      "配信日時を確認してください。";
+
+    return;
+
+  }
+
+
+  eventBox.innerHTML =
+    "<strong>"
+    + escapeHTML(title)
+    + "</strong>"
+    + "<br><br>"
+    + formatDate(eventDate);
+
+
+  const now =
+    new Date();
+
+  const diff =
+    eventDate.getTime()
+    - now.getTime();
+
+
+  /*
+    配信開始時刻から2時間以内ならLIVE
+  */
+
+  const twoHours =
+    2 * 60 * 60 * 1000;
+
+
+  if(
+    diff <= 0 &&
+    diff >= -twoHours
+  ){
+
+    liveBadge.classList.add("show");
+
+    eventBox.innerHTML +=
+      "<br><br>"
+      + "<strong>LIVE NOW</strong>";
+
+  }
+
+}
+
+
+/* =========================================================
+   日付表示
+========================================================= */
+
+function formatDate(date){
+
+  return date.toLocaleString(
+    "ja-JP",
+    {
+      year:"numeric",
+      month:"2-digit",
+      day:"2-digit",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+
+}
+
+
+/* =========================================================
+   HTMLエスケープ
+========================================================= */
+
+function escapeHTML(text){
+
+  return text
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   画像エラー
+========================================================= */
+
+function showImageError(
+  errorId,
+  imageId
+){
+
+  document.getElementById(
+    imageId
+  ).style.display="none";
+
+  document.getElementById(
+    errorId
+  ).style.display="block";
+
+}
+
+
+/* =========================================================
+   Logout
+========================================================= */
+
+function logout(){
+
+  sessionStorage.removeItem(
+    "kjcs_room_auth"
+  );
+
+  location.replace(
+    "login.html"
+  );
+
+}
+
+
+/* =========================================================
+   起動
+========================================================= */
+
+loadMessage();
+
+loadFixedBoard();
+
+loadConfig();
 
 </script>
 
 </body>
+
 </html>
